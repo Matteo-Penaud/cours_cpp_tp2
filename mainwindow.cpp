@@ -1,9 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-const QString baseKey = QString("abcdefghijklmnopqrstuvwxyz");
-const QString cryptoKey = QString("introuvableszyxwqpmkjhgfdc");
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -22,11 +19,11 @@ void MainWindow::exploreFile()
 {
     QList<QString> s_a_secretWords = {};
 
-    filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
+    s_filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
                                             "/",
-                                            tr("Images (*.txt)"));
+                                            tr("Fichier (*.txt)"));
 
-    QFile file(filePath);
+    QFile file(s_filePath);
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream stream(&file);
@@ -46,10 +43,11 @@ void MainWindow::exploreFile()
                 s_tmpWord.append(s_currentLine.at(0).toLower());
             }
         }
-        if(s_tmpWord.length() > 0) s_tmpWord.append(s_currentLine.at(0).toLower());
+        if(s_tmpWord.length() > 0) s_a_secretWords.append(s_tmpWord);
     }
     file.close();
 
+    ui->textBrowser->clear();
     foreach(const QString s_secretWord, s_a_secretWords)
     {
         ui->textBrowser->append(findWord(s_secretWord));
@@ -62,11 +60,11 @@ QString MainWindow::findWord(const QString &s_secretWord)
 
     for(short i = 0; i < s_secretWord.length(); i++)
     {
-        for(char c = 0; c < cryptoKey.length(); c++)
+        for(char c = 0; c < s_cryptoKey.length(); c++)
         {
-            if(s_secretWord.at(i) == cryptoKey.at(c))
+            if(s_secretWord.at(i) == s_cryptoKey.at(c))
             {
-                s_finalWord.append(baseKey.at(c));
+                s_finalWord.append(s_baseKey.at(c));
                 break;
             }
         }

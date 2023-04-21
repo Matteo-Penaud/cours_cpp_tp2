@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include <QDebug>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,9 +21,12 @@ public slots:
     void exploreFile(void);
 
 private:
+    const QString s_baseKey = QString("abcdefghijklmnopqrstuvwxyz");
+    const QString s_cryptoKey = QString("introuvableszyxwqpmkjhgfdc");
+
     Ui::MainWindow *ui;
 
-    QString filePath;
+    QString s_filePath;
 
     QString findWord(const QString &s_secretWord);
 };
